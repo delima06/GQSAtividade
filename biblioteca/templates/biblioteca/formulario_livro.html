@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Livro</title>
+    <!-- estilo simples para visualizacao -->
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f9; color: #333; }
+        .container { max-width: 500px; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #444; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], input[type="number"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background-color: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #218838; }
+        .error { color: red; margin-bottom: 15px; font-weight: bold; }
+        .back-link { display: inline-block; margin-top: 15px; color: #007bff; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <!-- desenvolvido por pedro davi e thiago de lima -->
+    <div class="container">
+        <h1>Cadastrar Novo Livro</h1>
+        
+        {% if erro %}
+            <div class="error">{{ erro }}</div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="titulo">Título do Livro</label>
+                <input type="text" id="titulo" name="titulo">
+            </div>
+            
+            <div class="form-group">
+                <label for="ano">Ano de Publicação</label>
+                <input type="number" id="ano" name="ano">
+            </div>
+            
+            <div class="form-group">
+                <label for="autor">Autor</label>
+                <select id="autor" name="autor">
+                    <option value="">Selecione um autor</option>
+                    {% for autor in autores %}
+                        <option value="{{ autor.id }}">{{ autor.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <button type="submit">Salvar Livro</button>
+        </form>
+        
+        <a class="back-link" href="{% url 'listar_livros' %}">Voltar para a Listagem</a>
+    </div>
+</body>
+</html>

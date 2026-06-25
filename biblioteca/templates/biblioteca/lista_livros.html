@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteca - Listagem de Livros</title>
+    <!-- estilo simples para visualizacao -->
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f9; color: #333; }
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { font-size: 28px; margin-bottom: 20px; color: #444; }
+        .actions { margin-bottom: 20px; }
+        .btn { display: inline-block; padding: 10px 15px; text-decoration: none; border-radius: 4px; font-weight: bold; color: white; margin-right: 10px; }
+        .btn-primary { background-color: #007bff; }
+        .btn-primary:hover { background-color: #0056b3; }
+        .btn-success { background-color: #28a745; }
+        .btn-success:hover { background-color: #218838; }
+        .btn-warning { background-color: #ffc107; color: #333; padding: 5px 10px; font-size: 14px; }
+        .btn-warning:hover { background-color: #e0a800; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #f8f9fa; }
+        .badge { display: inline-block; padding: 5px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .badge-disponivel { background-color: #d4edda; color: #155724; }
+        .badge-emprestado { background-color: #f8d7da; color: #721c24; }
+        .empty-message { margin-top: 20px; text-align: center; color: #777; font-style: italic; }
+    </style>
+</head>
+<body>
+    <!-- desenvolvido por pedro davi e thiago de lima -->
+    <div class="container">
+        <h1>Sistema da Biblioteca</h1>
+        
+        <div class="actions">
+            <a class="btn btn-primary" href="{% url 'criar_autor' %}">Cadastrar Autor</a>
+            <a class="btn btn-success" href="{% url 'criar_livro' %}">Cadastrar Livro</a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Ano</th>
+                    <th>Autor</th>
+                    <th>Disponibilidade</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for livro in livros %}
+                    <tr>
+                        <td>{{ livro.titulo }}</td>
+                        <td>{{ livro.ano }}</td>
+                        <td>{{ livro.autor.nome }}</td>
+                        <td>
+                            {% if livro.disponivel %}
+                                <span class="badge badge-disponivel">Disponível</span>
+                            {% else %}
+                                <span class="badge badge-emprestado">Emprestado</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="btn btn-warning" href="{% url 'emprestar_livro' livro.id %}">
+                                {% if livro.disponivel %}
+                                    Emprestar
+                                {% else %}
+                                    Devolver
+                                {% endif %}
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="empty-message">Nenhum livro cadastrado na biblioteca.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
